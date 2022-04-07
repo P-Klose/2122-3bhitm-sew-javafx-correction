@@ -10,7 +10,7 @@ target/
 db/
 .idea/dataSources/
 lsp/db/
-.DS_Store/
+.DS_Store
 .idea/
 *.zip
 *.tar
