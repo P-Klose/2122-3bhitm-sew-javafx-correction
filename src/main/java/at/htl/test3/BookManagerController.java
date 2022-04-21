@@ -40,7 +40,7 @@ public class BookManagerController {
 
     @FXML
     void onNew(ActionEvent event) {
-
+        model.reset();
     }
 
     @FXML
@@ -59,7 +59,7 @@ public class BookManagerController {
     @FXML
     public void initialize() {
         repo = new BookRepository();
-        model= new Book("","",LendStatus.AVAILABLE);
+        model= new Book("","",null);
 
         tfIsbn.textProperty().bindBidirectional(model.isbnProperty());
         tfTitle.textProperty().bindBidirectional(model.titleProperty());
@@ -79,7 +79,7 @@ public class BookManagerController {
             };
             model.statusProperty().addListener(listener);
             tgStatus.selectedToggleProperty().addListener(listener);
-
+        //model.setStatus(LendStatus.AVAILABLE);
         TreeItem root = new TreeItem();
         tvTree.setRoot(root);
         tvTree.setShowRoot(false);

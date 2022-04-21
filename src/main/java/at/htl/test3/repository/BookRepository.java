@@ -62,7 +62,24 @@ public class BookRepository {
     }
     public void update(Book b){
         try {
-            PreparedStatement pstmt = conn.prepareStatement("update book set title=?,status=? where isbn=?");
+            PreparedStatement searchStmt = conn.prepareStatement("select count(*) from book where isbn=?");
+            searchStmt.setString(1,b.getIsbn());
+            ResultSet searchRs = searchStmt.executeQuery();
+            long anz = 0;
+            if (searchRs.next()){
+                anz = searchRs.getLong(1);
+            }
+            searchRs.close();
+            searchStmt.close();
+
+            PreparedStatement pstmt;
+
+            if (anz >= 1){
+                pstmt = conn.prepareStatement("update book set title=?,status=? where isbn=?");
+            }else {
+                pstmt = conn.prepareStatement("insert into book(title, status, isbn) values (?,?,?)");
+            }
+
             pstmt.setString(1,b.getTitle());
             pstmt.setString(2,""+b.getStatus().letter);
             pstmt.setString(3,b.getIsbn());
@@ -74,4 +91,5 @@ public class BookRepository {
             e.printStackTrace();
         }
     }
+
 }
